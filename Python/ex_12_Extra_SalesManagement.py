@@ -7,8 +7,11 @@
         - La opción salir borra el .txt.
 """
 
+# Importing the os module to work with files
 import os
 
+# Main function
+# Function responsible for controlling the program
 def sales_manager():
     print('What do you want?\n 1.- Create a new sales file\n 2.- Add sale\n 3.- Consult sales manager\n 4.- Exit')
     choice = input('Enter the number your choice: ')
@@ -33,6 +36,7 @@ def sales_manager():
     if choice == 4:
         print('Leaving the program...')
         
+# Function to add sales
 def add_sale():
     product = input('Enter the product sold: ')
     quantity = int(input('Enter the quantity sold: '))
@@ -46,6 +50,7 @@ def add_sale():
     elif choice == 'no' or choice == 'n':
         print('Choice the option "1" to create a sales file. This option (2) is to add a new sale to the existing file')
         
+# Function to review sales 
 def consult():
     try:
         sales_file = open('Files/sales_file.txt', 'r+')
@@ -54,4 +59,5 @@ def consult():
     except:
         print('The file "sales_file" does not exist')
         
+# Main function call
 sales_manager()
