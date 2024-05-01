@@ -1,10 +1,10 @@
 """ 
-    Desarrolla un programa de gestión de ventas que almacena sus datos en un archivo .txt
-        - Cada producto se guarda en una línea del archivo de la siguiente manera:              
-            [nombre_producto], [cantidad_vendida], [precio].
-        - Siguiendo ese formato, y mediante terminal, debe permitir añadir, consultar, actualizar, eliminar productos y salir.
-        - También debe poseer opciones para calcular la venta total y por producto.
-        - La opción salir borra el .txt.
+    EJERCICIO: 
+    - Desarrolla un programa de gestión de ventas que almacena sus datos en un archivo .txt.
+    - Cada producto se guarda en una línea del archivo de la siguiente manera: [nombre_producto], [cantidad_vendida], [precio].
+    - Siguiendo ese formato, y mediante terminal, debe permitir añadir, consultar, actualizar, eliminar productos y salir.
+    - También debe poseer opciones para calcular la venta total y por producto.
+    - La opción salir borra el .txt.
 """
 
 # Importing the os module to work with files
@@ -25,27 +25,28 @@ def sales_Manager():
     else:
         print('Processing your request...\n')
         
-    if choice <= 0 or choice >= 7:
-        print('"Error answer. Try again"')
-        sales_Manager()
+        if choice <= 0 or choice >= 7:
+            print('"Error answer. Try again"')
+            sales_Manager()
+            
+        if choice == 1:
+            create_File()
+            
+        if choice == 2:
+            add_Sale()
+            
+        if choice == 3:
+            add_Inventory()
+            
+        if choice == 4:
+            consult()
+            
+        if choice == 5:
+            available_Files()
+            
+        if choice == 6:
+            print('Leaving the program...')
         
-    if choice == 1:
-        create_File()
-        
-    if choice == 2:
-        add_Sale()
-        
-    if choice == 3:
-        add_Inventory()
-        
-    if choice == 4:
-        consult()
-        
-    if choice == 5:
-        available_Files()
-        
-    if choice == 6:
-        print('Leaving the program...')
         
 # Function to create new file
 def create_File():
@@ -68,7 +69,7 @@ def create_File():
         if name_file == 'exit' or name_file == 'Exit':
             create_File()
         else:
-            sales_file = open(f'Python/Files/Sales/{name_file}.txt', 'w+')
+            sales_file = open(f"C:/Python/Files/Sales/{name_file}.txt", 'w+')
             print(f'"{name_file}" was created succesfully')
     elif create_file == 2:
         print('"New inventory"')
@@ -76,7 +77,7 @@ def create_File():
         if name_file == 'exit' or name_file == 'Exit':
             create_File()
         else:
-            inv_file = open(f'Python/Files/Inventories/{name_file}.txt', 'w+')
+            inv_file = open(f'C:/Python/Files/Inventories/{name_file}.txt', 'w+')
             print(f'"{name_file}" was created succesfully')
         
     sales_Manager()
@@ -88,7 +89,7 @@ def add_Sale():
     price = float(input('Enter the unit price: $'))
     total_price = quantity * price
     print('"Available files"')
-    available_files = os.listdir('Python/Files/Sales')
+    available_files = os.listdir('C:/Python/Files/Sales')
     if len(available_files) == 0:
         print('No sales files available')
     else:
@@ -98,7 +99,7 @@ def add_Sale():
     print('Executing...')
     if choice == 'yes' or choice == 'y':
         name_file = input('Enter the name file (without extension) where the sale will be saved: ').lower()
-        sales_file = open(f'Python/Files/Sales/{name_file}.txt', 'a')
+        sales_file = open(f'C:/Python/Files/Sales/{name_file}.txt', 'a')
         sales_file.write(f'[Product: {product.capitalize()}] -> [Amount: {quantity}] -> [Unit Price: ${price}] -> [Total: ${total_price}]\n')
         sales_file.close()
         print('Successfully added sale')
@@ -112,7 +113,7 @@ def add_Inventory():
     product = input('Enter the product to add: ')
     price = float(input('Enter the unit price: $'))
     print('"Available files"')
-    available_files = os.listdir('Python/Files/Inventories')
+    available_files = os.listdir('C:/Python/Files/Inventories')
     if len(available_files) == 0:
         print('No inventories files available')
     else:
@@ -122,7 +123,7 @@ def add_Inventory():
     print('Executing...')
     if choice == 'yes' or choice == 'y':
         name_file = input('Enter the name file (without extension) where the sale will be saved: ').lower()
-        sales_file = open(f'Python/Files/Inventories/{name_file}.txt', 'a')
+        sales_file = open(f'C:/Python/Files/Inventories/{name_file}.txt', 'a')
         sales_file.write(f'{product.capitalize()} -> ${price}\n')
         sales_file.close()
         print('Product added to inventory successfully')
@@ -146,7 +147,7 @@ def consult():
                 print('"Error answer"\n')
                 consult()
             if review_file == 1:
-                availables_sales_files = os.listdir('Python/Files/Sales')
+                availables_sales_files = os.listdir('C:/Python/Files/Sales')
                 for element in availables_sales_files:
                     print('\n"Sales"')
                     print(f'  - {element}')
@@ -155,7 +156,7 @@ def consult():
                     sales_Manager()
                 else:
                     try:
-                        sales_file = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
+                        sales_file = open(f'C:/Python/Files/Sales/{name_file}.txt', 'r+')
                         print(sales_file.read())
                         sales_file.close()
                         consult()
@@ -163,7 +164,7 @@ def consult():
                         print(f'The file "{name_file}" does not exist')
                 
             if review_file == 2:
-                availables_inventories_files = os.listdir('Python/Files/Inventories')
+                availables_inventories_files = os.listdir('C:/Python/Files/Inventories')
                 for element in availables_inventories_files:
                     print('"Inventories"')
                     print(f'  - {element}')
@@ -172,7 +173,7 @@ def consult():
                     sales_Manager()
                 else:
                     try:
-                        sales_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
+                        sales_file = open(f'C:/Python/Files/Inventories/{name_file}.txt', 'r+')
                         print(sales_file.read())
                         sales_file.close()
                         consult()
@@ -183,8 +184,8 @@ def consult():
             consult()
         
 def available_Files():
-    available_sales_files = os.listdir('Python/Files/Sales')
-    available_inventory_files = os.listdir('Python/Files/Inventories')
+    available_sales_files = os.listdir('C:/Python/Files/Sales')
+    available_inventory_files = os.listdir('C:/Python/Files/Inventories')
     if len(available_sales_files) == 0 and len(available_inventory_files) == 0:
         print('"There are not any files in existence"')
     else:
@@ -193,6 +194,6 @@ def available_Files():
             print(f'- {element}')
             
     sales_Manager()
-        
+
 # Main function call
 sales_Manager()
