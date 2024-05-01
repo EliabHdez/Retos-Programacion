@@ -29,25 +29,23 @@ class Sales_manage:
 
     def create_product(self):
         self.print_in_box("You´re in SALES management, let´s begin adding products...")
-        while quantity!=int() or price!=int():
-            name=input("Product name: ").capitalize()
-            quantity=int(input("Quantity sold: "))
-            price=int(input("Price: "))
-            if quantity!=int() or price!=int():
-                print("------------------------------------>Only numbers must be typped for quantity and price<------------------------------------\n")
-        else:
-            New_product=Product(name,quantity,price)
-            file.write(f"[Product: {name}] -> [Quantity: {quantity}] -> [Price: ${price}]")
+        while True:
+            try:
+                name=input("Product name: ").capitalize()
+                quantity=int(input("Quantity sold: "))
+                price=int(input("Price: "))
+            except:
+                    print("")
+                    print("------------------------------------>Only numbers must be typped for quantity and price<------------------------------------\n")
+            else:
+                New_product=Product(name,quantity,price)
+                file=open("C:/Python/Files/Sales/curent_sale.txt", "w+")
+                file.write(f"[Product: {name}] -> [Quantity sold: {quantity}] -> [Price: ${price}]")
+                break
 
-
-
-
-
-
-
-
-#        file.write(f"[Product: {name}] -> [Amount: {quantity}] -> [Unit Price: ${price}]")
-
+        print("Print para comprobar que todo va como se espera xd")
+        file=open("C:/Python/Files/Sales/curent_sale.txt", "r+")
+        print(file.read())
 
 
 
