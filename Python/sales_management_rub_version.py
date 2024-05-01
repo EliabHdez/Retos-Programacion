@@ -7,7 +7,7 @@
     - La opción salir borra el .txt.
 """
 
-file=open("C:/Python/Files/Sales/current_sale.txt", "w+")
+fileee=open("C:/Python/Files/Sales/current_sale.txt", "w+")
 
 class Product:
     def __init__ (self,name,quantity,price):
@@ -25,10 +25,12 @@ class Sales_manage:
         print("-" * (length + 4))
         print("|", message.center(length), "|")
         print("-" * (length + 4))
-        
+
+
 
     def create_product(self):
         self.print_in_box("You´re in SALES management, let´s begin adding products...")
+
         while True:
             try:
                 name=input("Product name: ").capitalize()
@@ -39,13 +41,25 @@ class Sales_manage:
                     print("------------------------------------>Only numbers must be typped for quantity and price<------------------------------------\n")
             else:
                 New_product=Product(name,quantity,price)
-                file=open("C:/Python/Files/Sales/curent_sale.txt", "w+")
-                file.write(f"[Product: {name}] -> [Quantity sold: {quantity}] -> [Price: ${price}]")
-                break
-
-        print("Print para comprobar que todo va como se espera xd")
-        file=open("C:/Python/Files/Sales/curent_sale.txt", "r+")
-        print(file.read())
+                answer=input("Would you like adding another product? (Press enter to continue, type: -no- to finish):  ")
+                print("--------------------------------------------------------------------------------------------")
+                if answer=="no" or answer=="No":
+                    with open("C:/Python/Files/Sales/current_sale.txt", "a") as fileee:
+                        total_length =(96)
+                        fileee.write("-" * total_length + "\n")
+                        fileee.write(f"|    Product: {name.center(30)}|    Quantity: {str(quantity).center(10)}|    Price: ${str(price).center(10)}  |\n")      
+                        fileee.write("-" * total_length + "\n")
+                    break
+                else:
+                    with open("C:/Python/Files/Sales/current_sale.txt", "a") as fileee:
+                        total_length =(96)
+                        fileee.write("-" * total_length +  "\n")
+                        fileee.write(f"|    Product: {name.center(30)} |    Quantity: {str(quantity).center(10)}|    Price: ${str(price).center(10)}  |\n")   
+                        fileee.write("-" * total_length + "\n")
+        print("Printing to verify that everything is as expected:")
+        fileee = open("C:/Python/Files/Sales/current_sale.txt", "r+")
+        for line in fileee:
+            print(line.strip())
 
 
 
