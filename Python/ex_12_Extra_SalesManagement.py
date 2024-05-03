@@ -9,6 +9,7 @@
 
 # Agregar exit a la funcion add_sale (opcional)
 # Agregar exit a la funcion add_product (opcional)
+# Programar que cuando se agreguen productos a los inventarios por primera vez, estos se acomoden por orden alfabetico (como cuando actualizan los inventarios) por si ingresan los productos como vayan cayendo
 
 # Importing the os module to work with files
 import os
@@ -17,10 +18,10 @@ import os
 # Function responsible for controlling the program
 def sales_Manager():
     print('')
-    print('What do you want?\n 1.- Create a new file\n 2.- Add sale\n 3.- Add product\n 4.- Consult sales manager or inventories\n 5.- Check existing files\n 6.- Update stock\n 7.- Delete product\n 8.- Exit')
-    choice = input('Enter the number your choice: ')
+    print('What do you want?\n 1.- Create a new file\n 2.- Add sale\n 3.- Add product\n 4.- Consult sales manager or inventories\n 5.- Review existing files\n 6.- Update stock\n 7.- Delete product\n 8.- Exit')
+    choice = input('Enter the number of your choice: ')
     
-    if choice == 'Exit' or choice == 'exit':
+    if choice == 'Exit' or choice == 'exit' or choice == '8':
         print('Leaving the program...')
         print('Nice day!')
     else:
@@ -31,11 +32,8 @@ def sales_Manager():
                 sales_Manager()
             if choice >= 1 and choice <= 7:
                 print('Processing your request...\n')
-            if choice == 8:
-                print('Leaving the program...')
-                print('Nice day!')
         except:
-            print('"You must enter the number corresponding to the desired option as a response"')
+            print('"You must enter as answer the number corresponding to the desired option"')
             sales_Manager()
 
         if choice == 1:
@@ -61,12 +59,12 @@ def sales_Manager():
         
 # Function to create new file
 def create_File():
-    print('What type file do you want to create?\n 1.- Sales\n 2.- Inventory')
+    print('What type file you want to create?\n 1.- Sales\n 2.- Inventory')
     create_file = input('Enter your number choice: ')
     try:
         create_file = int(create_file)
         if create_file <= 0 or create_file >= 3:
-            print('Error answer: "Please enter 1 or 2"\n')
+            print('Answer error: "Please enter 1 or 2"\n')
             create_File()
         else:
             print('Initializing...')
@@ -81,7 +79,7 @@ def create_File():
             create_File()
         else:
             sales_file = open(f'Python/Files/Sales/{name_file}.txt', 'w+')
-            print(f'"{name_file}" was created succesfully')
+            print(f'"{name_file}" was succesfully created')
     elif create_file == 2:
         print('"New inventory"')
         name_file = input('Name file: ')
@@ -90,7 +88,7 @@ def create_File():
         else:
             inv_file = open(f'Python/Files/Inventories/{name_file}.txt', 'w+')
             inv_file.write('"Products --- No. de piezas"')
-            print(f'"{name_file}" was created succesfully')
+            print(f'"{name_file}" was succesfully created')
         
     sales_Manager()
         
@@ -110,13 +108,13 @@ def add_Sale():
     choice = input('If the sales file does not exist, it will be created.\nDo you wish to continue? [y/n]: ').lower()
     print('Executing...')
     if choice == 'yes' or choice == 'y':
-        name_file = input('Enter the name file (without extension) where the sale will be saved: ').lower()
+        name_file = input('Enter the name file (without .txt) where the sale will be uploaded: ').lower()
         sales_file = open(f'Python/Files/Sales/{name_file}.txt', 'a')
         sales_file.write(f'[Product: {product.capitalize()}] -> [Amount: {quantity}] -> [Unit Price: ${price}] -> [Total: ${total_price}]\n')
         sales_file.close()
         print('Successfully added sale')
     elif choice == 'no' or choice == 'n':
-        print('To create a new file, choice the 1 option.')
+        print('To create a new file, select option 1.')
         
     sales_Manager()
     
@@ -134,11 +132,11 @@ def add_Inventory():
     choice = input('If the inventory file does not exist, it will be created.\nDo you wish to continue? [y/n]: ').lower()
     print('Executing...')
     if choice == 'yes' or choice == 'y':
-        name_file = input('Enter the name file (without extension) where the sale will be saved: ').lower()
+        name_file = input('Enter the name file (without .txt) where the sale will be uploaded: ').lower()
         sales_file = open(f'Python/Files/Inventories/{name_file}.txt', 'a')
         sales_file.write(f'{product.capitalize()} - {pieces} pzas\n')
         sales_file.close()
-        print('Product added to inventory successfully')
+        print('Product successfully added to inventory')
     elif choice == 'no' or choice == 'n':
         print('To create a new file, choice the 1 option.')
         
@@ -146,7 +144,7 @@ def add_Inventory():
         
 # Function to review sales
 def consult():
-    print('What do you want review?\n 1.- Sales management\n 2.- Inventories\n 3.- Exit')
+    print('What do you want review?\n 1.- Sales Manager\n 2.- Inventories\n 3.- Exit')
     review_file = input('Please enter your answer: ')
     
     if review_file == '3' or review_file == 'exit' or review_file == 'Exit':
@@ -163,7 +161,7 @@ def consult():
                 print('\n"Sales"')
                 for element in availables_sales_files:
                     print(f'  - {element}')
-                name_file = input('Enter the name file what you want to review (without extension): ')
+                name_file = input('Enter the name file what you want to review (without .txt): ')
                 if name_file == 'exit' or name_file == 'Exit':
                     sales_Manager()
                 else:
@@ -180,7 +178,7 @@ def consult():
                 print('"Inventories"')
                 for element in availables_inventories_files:
                     print(f'  - {element}')
-                name_file = input('Enter the name file what you want to review (without extension): ')
+                name_file = input('Enter the name file what you want to review (without .txt): ')
                 if name_file == 'exit' or name_file == 'Exit':
                     sales_Manager()
                 else:
@@ -192,7 +190,7 @@ def consult():
                     except:
                         print(f'The file "{name_file}" does not exist')
         except:
-            print('"Error answer": Please select any to options availables')
+            print('"Answer error": Please select any to options availables')
             consult()
         
 def available_Files():
@@ -219,7 +217,7 @@ def update_data():
         try:
             choice_update = int(choice_update)
             if choice_update <= 0 or choice_update >= 4:
-                print('Error answer. Select 1 or 2\n')
+                print('Answer error. Select 1 or 2\n')
                 update_data()
         except:
             print('"The answer can only be 1 or 2"\n')
@@ -235,7 +233,7 @@ def update_data():
                 print('"The answer can only be 1 or 2"\n')
                 choice_update = int(input('Enter your answer: '))
         except:
-            print('"Error answer". Please enter 1 or 2\n')
+            print('"Answer error". Please enter 1 or 2\n')
             update_data()
         
         if choice_update == 1:
@@ -247,12 +245,12 @@ def update_data():
                 print(f' {count_files}.- {element}')
             name_file = input('Enter the name file what you want update: ')
             try:
-                stock_file = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
-                list_stock = []
+                sale_file = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
+                list_sale = []
                 count_elements = 0
-                for element in stock_file:
+                for element in sale_file:
                     element = element[:-1]
-                    list_stock.append(element)
+                    list_sale.append(element)
                     count_elements += 1
                     print(f'{count_elements}.- {element}')
                 choice = int(input('Enter the sale number what you want update: '))
@@ -264,18 +262,18 @@ def update_data():
                 unit_price = float(input('Unit Price: $'))
                 total_sale = unit_price * amount
                 new_information = f'[Product: {product.capitalize()}] {next_icon} [Amount: {amount}] {next_icon} [Unit Price: ${unit_price}] {next_icon} [Total: ${total_sale}]'
-                old_information = list_stock[choice]
-                list_stock[choice] = new_information
+                old_information = list_sale[choice]
+                list_sale[choice] = new_information
                 change = f'* Old information: {old_information}\n* New information: {new_information}'
                 print(change)
-                file_sale = open(f'Python/Files/Sales/{name_file}.txt', 'w')
-                while len(list_stock) != 0:
-                    first_value = list_stock.pop(0)
-                    file_sale.write(f'{first_value}\n')
-                file_sale = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
-                print('"Successful changes"')
-                print(file_sale.read())
-                file_sale.close()
+                sale_file = open(f'Python/Files/Sales/{name_file}.txt', 'w')
+                while len(list_sale) != 0:
+                    first_value = list_sale.pop(0)
+                    sale_file.write(f'{first_value}\n')
+                sale_file = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
+                print('"Changes successfully completed"')
+                print(sale_file.read())
+                sale_file.close()
             except:
                 print(f'The file {name_file} does not exist')
                 update_data()
@@ -288,14 +286,37 @@ def update_data():
                 count_files += 1
                 print(f' {count_files}.- {element}')
             name_file = input('Enter the name file what you want update: ')
-            stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
-            list_stock = []
-            count_elements = 0
-            for element in stock_file:
-                element = element[:-1]
-                list_stock.append(element)
-                count_elements += 1
-                print(f'{count_elements}.- {element}')
+            try:
+                stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
+                list_stock = []
+                count_elements = 0
+                for element in stock_file:
+                    element = element[:-1]
+                    list_stock.append(element)
+                    count_elements += 1
+                    print(f'{count_elements}.- {element}')
+                choice = int(input('Enter the inventory number what you want update: '))
+                choice = choice - 1
+                print('Enter the new information')
+                product = input('Product: ')
+                pieces = int(input('Quantity: '))
+                new_information = f'{product.capitalize()} - {pieces} pzas/paq'
+                old_information = list_stock[choice]
+                list_stock[choice] = new_information
+                change = f'* Old information: {old_information}\n* New information: {new_information}'
+                print(change)
+                stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'w')
+                while len(list_stock) != 0:
+                    list_stock.sort()
+                    first_value = list_stock.pop(0)
+                    stock_file.write(f'{first_value}\n')
+                stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
+                print('"Changes successfully completed"')
+                print(stock_file.read())
+                stock_file.close()
+            except:
+                print(f'The file {name_file} does not exist')
+                update_data()
                 
     elif choice_update == 3:
         print('Leaving...')
@@ -312,42 +333,80 @@ def remove_data():
         try:
             choice_remove = int(choice_remove)
             if choice_remove <= 0 or choice_remove >= 4:
-                print('Error answer. Select 1 or 2\n')
+                print('Answer error. Select 1 or 2\n')
                 remove_data()
         except:
             print('"The answer just can be 1 or 2"\n')
             remove_data()
-        
+            
     if choice_remove == 1:
-        availables_files = os.listdir('Python/Files/Inventories')
-        print("*** Availables Inventories ***")
-        count_files = 0
-        for element in availables_files:
-            count_files += 1
-            print(f' {count_files}.- {element}')
-        name_file = input('Enter the name file: ')
-        stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
-        list_stock = []
-        count_elements = 0
-        for element in stock_file:
-            element = element[:-1]
-            list_stock.append(element)
-            count_elements += 1
-            print(f'{count_elements}.- {element}')
-        choice = int(input('Enter the product you want to remove: '))
-        choice = choice - 1
-        del list_stock[choice]
-        print(list_stock)
-        file_inventory = open(f'Python/Files/Inventories/{name_file}.txt', 'w')
-        while len(list_stock) != 0:
-            first_value = list_stock.pop(0)
-            file_inventory.write(f'{first_value}\n')
-        file_inventory = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
-        print('\n"The product has been removed"')
-        file_inventory.close()
-    elif choice_remove == 2:
-        print('Leaving...')
-        sales_Manager()
+        print('What do you want remove?\n 1.- Sales\n 2.- Prodcut(s)')
+        choice_update = input('Enter your answer: ')
+        
+        try:
+            choice_remove = int(choice_update)
+            while choice_remove <= 0 or choice_remove >= 3:
+                print('"The answer can only be 1 or 2"\n')
+                choice_update = int(input('Enter your answer: '))
+        except:
+            print('"Answer error". Please enter 1 or 2\n')
+            update_data()
+            
+        if choice_remove == 1:
+            availables_files = os.listdir('Python/Files/Sales')
+            print("*** Availables Sales ***")
+            count_files = 0
+            for element in availables_files:
+                count_files += 1
+                print(f' {count_files}.- {element}')
+            name_file = input('Enter the name file: ')
+            sale_file = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
+            list_sale = []
+            count_elements = 0
+            for element in sale_file:
+                element = element[:-1]
+                list_sale.append(element)
+                count_elements += 1
+                print(f'{count_elements}.- {element}')
+            choice = int(input('Enter the sale you want to remove: '))
+            choice = choice - 1
+            del list_sale[choice]
+            print(list_sale)
+            sale_file = open(f'Python/Files/Sales/{name_file}.txt', 'w')
+            while len(list_sale) != 0:
+                first_value = list_sale.pop(0)
+                sale_file.write(f'{first_value}\n')
+            sale_file = open(f'Python/Files/Sales/{name_file}.txt', 'r+')
+            print('\n"The sale has been removed"')
+            sale_file.close()
+        
+        if choice_remove == 2:
+            availables_files = os.listdir('Python/Files/Inventories')
+            print("*** Availables Inventories ***")
+            count_files = 0
+            for element in availables_files:
+                count_files += 1
+                print(f' {count_files}.- {element}')
+            name_file = input('Enter the name file: ')
+            stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
+            list_stock = []
+            count_elements = 0
+            for element in stock_file:
+                element = element[:-1]
+                list_stock.append(element)
+                count_elements += 1
+                print(f'{count_elements}.- {element}')
+            choice = int(input('Enter the product you want to remove: '))
+            choice = choice - 1
+            del list_stock[choice]
+            print(list_stock)
+            stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'w')
+            while len(list_stock) != 0:
+                first_value = list_stock.pop(0)
+                stock_file.write(f'{first_value}\n')
+            stock_file = open(f'Python/Files/Inventories/{name_file}.txt', 'r+')
+            print('\n"The product has been removed"')
+            stock_file.close()
         
 # Main function call
 sales_Manager()
