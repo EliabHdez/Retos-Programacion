@@ -7,46 +7,55 @@
     - La opción salir borra el .txt.
 """
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-fileee=open("C:/Python/Files/Sales/current_sale.txt", "w+")                                            #* Recien se ejecuta el programa se crea el archivo .txt sobre el cual se trabajará
+fileee=open("C:/Python/Files/Sales/current_sale.txt", "w+")   #* Recien se ejecuta el programa se crea el archivo .txt sobre el cual se trabajará
 ##############################################################################################################################################################################################################################
-class Product:                                                                                         #* Clase para craear los prodcutos con sus propiedades
+class PRODUCT:     #* Clase para craear los prodcutos con sus propiedades
     def __init__(self, name, quantity, price):
         self.name = name
         self.quantity = quantity
         self.price = price
 ##############################################################################################################################################################################################################################
-class Sale_number:                                                                                      #* Esta clase gestiona un diccionario para manejar los productos por orden numérico
+class Sale_number:   #* Esta clase gestiona un diccionario para manejar los productos por orden numérico
     def __init__(self,new_product=None):
         self.products_dict = {}
         if new_product:
             self.add_product(new_product)
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def add_product(self, new_product):                                                                 #* Esta función agrega los productos al dict (comenzando con el indice 1 para que coincida con nuestra forma de contar) 
-        self.products_dict[len(self.products_dict) + 1] = new_product                                   #Posteriormente en la clase Sales_manage en la función create_product se asocia el indice con la variable sale_number
+    def add_product(self, new_product):   #* Esta función agrega los productos al dict (comenzando con el indice 1 para que coincida con nuestra forma de contar) 
+        self.products_dict[len(self.products_dict) + 1] = new_product  #Posteriormente en la clase Sales_manage en la función create_product se asocia el indice con la variable sale_number
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def get_product(self, number_by_user):                                                              #Esta función es para obtener un producto determinado (por numero de producto) y hacer lo necesario con sus propiedades
+    def get_product(self, number_by_user):   #*Esta función es para obtener un producto determinado (por numero de producto)
         return self.products_dict.get(number_by_user)
     
 ##############################################################################################################################################################################################################################
-class Sales_manage:
+class Sales_manage:     #*Clase principal para gestionar el programa
     def __init__(self,last_number=0):
-        self.last_number = last_number
-        self.clas_sale_number = Sale_number()
+        self.last_number = last_number  #* En esta propiedad se guarda el # del ultimo producto agregado
+        self.clas_sale_number = Sale_number()   #*Instancia para llamar a l aclase Sale_numer y sus funciones dentro de esta clase principal
         self.print_in_box("You´re in SALES management, let´s begin adding products...")
         self.create_product()
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def navigation(self):
-        self.print_in_box("What do you need to do?\n 1: To change any product information (Description, Quantity sold  or Price)\n 2: To remove any product\n 3: To consult all sale´s products\n 4: To add products")
+    def navigation(self): #* Nombre autodescriptivo xd 
+        print("-------------------------------------------------------------------------------------------------")
+        print("|                                    What do you need to do?                                    |")
+        print("|          1: To change any product information (Description, Quantity sold  or Price)          |")
+        print("|                                   2: To remove any product                                    |")
+        print("|                               3: To consult all sale´s products                               |")
+        print("|                                      4: To add products                                       |")
+        print("|                                  5: To get sale´s total cost                                  |")
+        print("-------------------------------------------------------------------------------------------------\n")
         while True:
             try:
-                response=int(input("To continue, please type the number of your selection: \n"))
+                response=int(input("To continue, please type the number of your selection ----> "))
+                print("")
             except:
-                
-                print("------------------------------------>Only numbers must be typed for a valid selection<------------------------------------\n")
+                self.print_in_box("-----> Only numbers must be typed for a valid selection <-----")
+                print("")
             else:
-                if response < 1 or response > 4:
-                    print("------------------------------------>Please, enter a valid selection number<------------------------------------\n")
+                if response < 1 or response > 5:
+                    self.print_in_box("-----> Please, enter a valid selection number <-----")
+                    print("")
                 elif response == 1:
                     self.change_product_info()
                 elif response == 2:
@@ -55,18 +64,21 @@ class Sales_manage:
                     self.consult()
                 elif response == 4:
                     self.create_product(self.last_number)
+                elif response == 5:
+                    self.sale_calculation()
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def print_in_box(self,message, min_length=50):                                                      #* Funcion para imprimir en consola (con una cajita que centra el contenido automaticamente)
-        length = max(len(message), min_length)
-        print("-" * (length + 4))
-        print("|", message.center(length), "|")
+    def print_in_box(self,message, min_length=93): #* Funcion para imprimir con formato en consola, la logitud predeterminada mínima es 80)
+        length = max(len(message), min_length)     #------------------------------------------------------------------------------------
+        print("-" * (length + 4))                  #|             Formato de CAJA que centra el contenido automaticamente              |
+        print("|", message.center(length), "|")    #------------------------------------------------------------------------------------
         print("-" * (length + 4))
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def create_product(self,last_number=0):                                                             #* Función general para crear los productos y para escribirlos en el archivo .txt (estoy pensado en separarlas)
         sale_number = last_number                                                                            
-        with open("C:/Python/Files/Sales/current_sale.txt", "a") as fileee:                                                     
-            while True:                                                                                     #Este Loop es optener la respuesta deseada (se inicia el programa con la obligacion de agregar al menos un producto  
+        with open("C:/Python/Files/Sales/current_sale.txt", "a") as fileee:                                                    
+            while True:
+                self.print_in_box(f"Product # {(sale_number)+1}")                                                                                     #Este Loop es optener la respuesta deseada (se inicia el programa con la obligacion de agregar al menos un producto  
                 try:                                                                                        #Ya que es necesario para tener una base mínima con la cual trabajar)
                     name = input("Product name: ").capitalize()                                             #Por lo pronto se permite cualquier tipo de caracter para el nombre (incluso espacio vacío, luego soluciono eso xd)
                     quantity = int(input("Quantity sold: "))
@@ -75,41 +87,43 @@ class Sales_manage:
                     print("------------------------------------>Only numbers must be typed for quantity and price<------------------------------------\n") #Reglas para el input (respuesta deseada)
                 else:
                     Number_symbol="#: "                                         
-                    str_product="Product: "
+                    str_product="Description: "
                     str_qty="Qty: "                                                                         #Strings para imprimir todo el tecto formateado en el .txt
                     str_price="Price: "
                     dollar_sign = str("$ ")
 
-                    new_product = Product(name, quantity, price)
+                    new_product = PRODUCT(name, quantity, price)
                     self.clas_sale_number.add_product(new_product)                                          #Se llama la funcion para agregar los productos
                     sale_number += 1
-                    product_info=(f"|  {(str(Number_symbol)+str(sale_number)).center(4)}  |  {(str(str_product)+(name)).center(30)}  |  {(str(str_qty)+str(quantity)).center(10)}  |  {((str_price)+str(dollar_sign)+str(price)).center(15)}  |")
+                    product_info=(f"|  {(str(Number_symbol)+str(sale_number)).center(4)}  |  {(str(str_product)+(name)).center(47)}  |  {(str(str_qty)+str(quantity)).center(10)}  |  {((str_price)+str(dollar_sign)+str(price)).center(15)}  |")
                     with open("C:/Python/Files/Sales/current_sale.txt", "a") as fileee:                     #Se escribe todo ya formateado en el .txt (formato de tabla para una mayor facilidad de lectura de datos) 
-                            fileee.write("-" * 80 + "\n")                                                   #para que así se imprima en cosola (ese formato de tabla que viene desde el archivo .txt)
+                            fileee.write("-" * 97 + "\n")                                                   #para que así se imprima en cosola (ese formato de tabla que viene desde el archivo .txt)
                             fileee.write(f"{product_info}\n")   
-                            fileee.write("-" * 80 + "\n")
+                            fileee.write("-" * 97 + "\n")
                     while True:                                                                             #Este loop es para continuar agregando productos o detenerse            
                         try:
-                            print("-----------------------------------------------------------------------------------------")
-                            answer = int(input("| Would you like adding another product? (Type: 1 to continue or  2 to finish) |-->  "))
-                            print("-----------------------------------------------------------------------------------------")
+                            print("-------------------------------------------------------------------------------------------------")
+                            answer = int(input("|     Would you like adding another product? (Type: 1 to continue or  2 to finish)     |---->  "))
+                            print("-------------------------------------------------------------------------------------------------\n")
                         except:
                             self.print_in_box(f"Please, enter just 1 or 2")
+                            print("")
                         else:
                             if answer == 2:                                                                 #Si se selecciona 2 (finish) se detiene el loop interior y posteriormente se ejecuta el ultimo comando del loop exterior 
                                 break                                                                       #el cual es finally: y que contiene esta misma condicional 
-                            if answer == 1:                                                                 
-                                self.print_in_box(f"Alright, let´s continue with product # {(sale_number)+1}")##Si se selecciona 1 (continuar) solo se detiene el loop interior que es el que pregunta si se desea continuar o no
-                                break
-                            if answer == 2:                                                                 #Si de desea parar y no agregar mas productos se detiene tambien el loop interior para que posteriormente el loop exterior haga lo propio
-                                break
+                            if answer == 1:                                                              
+                                ##Si se selecciona 1 (continuar) solo se detiene el loop interior (que es el que pregunta si se desea continuar o no)
+                                break #Y continua con el loop exterior que es el que agrega los productos
+                            if answer == 2:                                                                 
+                                break #Si de desea parar y no agregar mas productos se detiene tambien el loop interior y posteriormente el loop exterior haga hace el break tambien
                             else:
-                                print("Invalid choice. Please enter 1 or 2.")
-
+                                self.print_in_box("-----> Please enter just 1 or 2 <-----")
+                                print("")
                     if answer == 2: 
-                            break                                                                           #Si de desea parar y no agregar mas productos se detiene tambien el loop exterior dando seguimiento al loop interior
+                            break   #Se detiene tambien el loop exterior dando seguimiento a la condicional (if answer == 2:)
 
-        self.last_number=sale_number
+        self.last_number=sale_number       #* Aquí se actualiza el ultimo el numero del último producto agregado
+        self.consult()
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def consult(self): #* Funcion simple para consultar todos los productos (planeo agregar la opcion para consultar por numero o nombre de producto)
@@ -117,103 +131,130 @@ class Sales_manage:
             with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
                 for line in fileee:
                     print(line.strip())
+            print("")
         else:
             self.print_in_box("There´s no products added")
-            self.navigation()
+            print("")
+        self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def change_product_info(self):                                                                      #* Funcion para actulizar los datos del prodcuto seleccionado (ya sea nombre, cantidad o precio)
         while True:                                                                                     #Bucle para verificar que el numero de producto realmente exista
-            self.print_in_box("Please enter # of the product to update: ")
+            self.print_in_box("Please enter # of the product: ")
             try:
-                number_by_user = int(input("#: "))
+                number_by_user = int(input("------------------------->#: "))
                 print("")
+
             except:
-                print("------------------------------------>Please, enter a valid selection number<------------------------------------\n")
+                print("------------------------------------>Please, enter a PRODUCT # <------------------------------------\n")
             else:
                 #Se llama a la funcion get_product() que es la que se encarga de buscar un producto por numero y lo retorna quedando disponible del producto para hacer modificaciones 
                 current_product = self.clas_sale_number.get_product(number_by_user)
                 if current_product:                 #Si el producto existe se procede con el siguiente paso
                     while True:                     #Bucle para verificar que se ingrese una opcion valida
-                        try:                                                                            
-                            change = int(input("What do you need to change? (1: Product name, 2: Quantity sold, 3: Price) Please, enter number selection: "))
+                        try:      
+                            print("-------------------------------------------------------------------------------------------------")
+                            print("|                                 What do you need to change?                                   |")
+                            print("|                                   1: Product Description                                      |")
+                            print("|                                      2: Quantity sold                                         |")
+                            print("|                                          3:  Price                                            |")
+                            print("|                                              ;)                                               |")
+                            print("-------------------------------------------------------------------------------------------------\n")
+                            change = int(input("-------------------------------Enter the number of your selection-------------------------------> #: ")) 
+                            print("")
+
                         except:
-                            print("------------------------------------>Please, enter just a valid selection number<------------------------------------\n")
+                            self.print_in_box("Please, enter just a valid selection number")
+                            print("")
                         else:
                             if change == 1 :
-                                new_name = input("Enter new product name: ").capitalize()
+                                new_name = input("Enter new product Description --->: ").capitalize()
+                                print("")
                                 current_product.name = new_name 
-                                self.update_info()
-                                self.consult()
+                                break
                             elif change == 2:
                                 while True:
                                     try:
-                                        new_quantity = int(input("Enter new quantity sold--------->: "))
-                                    except:
+                                        new_quantity = int(input("Enter new quantity sold --->: "))
                                         print("")
-                                        print("(------------------------------------>Please, enter a valid quantity<------------------------------------\n")
+                                    except:
+                                        self.print_in_box("Please, enter a valid quantity")
+                                        print("")
                                     else:
                                         current_product.quantity = new_quantity
-                                        self.update_info()
-                                        self.consult()
+                                        break
                             elif change == 3 :
                                 while True:
-                                    try:                                             
-                                        new_price = int(input("(Just numbers, no dollar sign)\n Enter new price -------->: "))
-                                    except: 
+                                    try:
+                                        self.print_in_box(" Enter new price (Just number, no dollar sign)")                                             
+                                        new_price = int(input("( ---> $: "))
                                         print("")
-                                        print("------------------------------------>Please, enter a valid new price<------------------------------------\n")
+                                    except: 
+                                        self.print_in_box("Please, enter a valid new price")
+                                        print("")
                                     else:    
                                         current_product.price = new_price
-                                        self.update_info()
-                                        self.consult()
-                            elif change < 1 or change > 3:
-                                print("------------------------------------>Please, enter a valid selection number<------------------------------------\n")
-                            elif change > 0 or change < 4:
-                                break
-                else:
-                    self.print_in_box("This # sale doesn´t exist. Please, try again") #Si el numero de producto ingresado no existe se notifica al usuario y se repite el bucle
+                                        break
+                        if change < 1 or change > 3:
+                            self.print_in_box("Please, enter a valid selection number")
+                            print("")
                         
-        self.navigation()
+                        self.update_info()
+                        self.consult()
+                        self.navigation()
+                else:
+                    self.print_in_box("This product # doesn´t exist. ---> Please, try again...") #Si el numero de producto ingresado no existe se notifica al usuario y se repite el bucle
+                    print("")
+
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def remove_product (self):                                                                          #* Función para remover un producto (por #)
-        while True:                                                                                     #Igual que los anteriores loop de verificacion
+    def remove_product (self):    #* Función para remover un producto (por #)
+        while True:      #Igual que los anteriores loop de verificacion
             try:
                 self.print_in_box("Please enter # of the product to remove: ")
-                number_by_user=int(input("#: "))
+                print("")
+                number_by_user=int(input("---> #: "))
+                print("")
             except:
-                self.print_in_box(f"Please enter just a number")
+                self.print_in_box("-----> Please enter just a number <-----")
+                print("")
             else:
-                if number_by_user in self.clas_sale_number.products_dict:                               #Si el numero de producto dado por el usuario existe:
-                    del self.clas_sale_number.products_dict[number_by_user]                             #Se elimina del diccionario
-                    self.update_info()
-                    self.consult()
-                    break                                                                               #Se rompe el loop una vez teminada la eliminacion del producto, tambien tengo pensado en hacer modificaciones para continuar si se desea
+                if number_by_user in self.clas_sale_number.products_dict:    #Si el numero de producto dado por el usuario existe:
+                    del self.clas_sale_number.products_dict[number_by_user]  #El producto asosiaco a este se elimina del diccionario
+                    self.print_in_box("-----> Product deleted <-----")
+                    self.update_info()     #Se actualiza los datos
+                    self.consult()  #Y se devuelve en automatico para el usuario una consulta de los productos 
+                    break   #Se rompe el loop una vez teminado el proceso
                 else:
-                    self.print_in_box(f"That sale # doesn´t exist, please try again")
+                    self.print_in_box("-----> That sale # doesn´t exist... Please try again <-----")
+                    print("")
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def update_info(self):                                                                              #* Función para actualizar datos despues de realizar una modificacion, tanto del dict como del txt
-        updated_products_dict = {}                                                                      #Diccionario (temporal) para almacenar los productos actualizados
-        for i, product in enumerate(self.clas_sale_number.products_dict.values(), start=1):             #Loop for para recorrer todos los elementos obteniendo values(el producto) del diccionario ya modificado, comenzando por el indice 1 
-            updated_products_dict[i]=product                                                            #Para reasignar el # de producto correctamente y guardas los items recorridos en el dict temporal 
-
-        self.clas_sale_number.products_dict = updated_products_dict                                     #Se llama al diccionario modificado para actualizarlo con la informacion del diccionario temporal
+    def update_info(self):    #* Función para actualizar datos despues de realizar una modificacion, tanto del dict como del txt
+        updated_products_dict = {}    #Diccionario (temporal) para almacenar los productos actualizados en el orden correcto
+        for index, product in enumerate(self.clas_sale_number.products_dict.values(), start=1): #*Loop for para obtener los elementos del diccionario ya modificado, obteniendo values(el producto) comenzando por el indice 1 
+            updated_products_dict[index]=product                                                #*Para reasignar el # de producto correctamente desde el índice 1 en el (dict temporal) y estecoindida con el numero de venta actualizado
+                                                                                                #*ya que los items en products_dict quedaron desfasados debido a la eliminacion de un producto
+        self.clas_sale_number.products_dict = updated_products_dict   #Se llama al diccionario modificado para actualizarlo con la informacion del diccionario temporal
 
         with open("C:/Python/Files/Sales/current_sale.txt", "w") as fileee:                 
-            for i, product in self.clas_sale_number.products_dict.items():                              #Loop-for para acceder a los elementos del diccionario ya actualizado y reescribir los datos actualizados en el .txt
-                Number_symbol = "#: "
-                str_product = "Product: "
-                str_qty = "Qty: "
-                str_price = "Price: "                                                                   #Variables para dar formato al texto 
-                dollar_sign = str("$ ")
-                product_info = f"|  {(str(Number_symbol)+str(i)).center(4)}  |  {(str(str_product)+(product.name)).center(30)}  |  {(str(str_qty)+str(product.quantity)).center(10)}  |  {((str_price)+str(dollar_sign)+str(product.price)).center(15)}  |"
-                fileee.write("-" * 80 + "\n")                                                           #Se escribe la info con formato de tabla en el .txt                                                  
-                fileee.write(f"{product_info}\n")                                           
-                fileee.write("-" * 80 + "\n")
+            for index, product in self.clas_sale_number.products_dict.items():  #Loop-for para acceder a las propiedades de cada producto contenido en el dict ya actualizado, y a su vez actualizar los datos en el .txt
+                Number_symbol = "#: "         #Variable para dar formato al texto 
+                str_product = "Description: "     #Variable para dar formato al texto 
+                str_qty = "Qty: "             #Variable para dar formato al texto 
+                str_price = "Price: "         #Variable para dar formato al texto 
+                dollar_sign = str("$ ")       #Variable para dar formato al texto 
+                product_info = f"|  {(str(Number_symbol)+str(index)).center(4)}  |  {(str(str_product)+(product.name)).center(47)}  |  {(str(str_qty)+str(product.quantity)).center(10)}  |  {((str_price)+str(dollar_sign)+str(product.price)).center(15)}  |"
+                fileee.write("-" * 97 + "\n")                                                   
+                fileee.write(f"{product_info}\n")  #Se escribe la info con formato de tabla en el .txt                                
+                fileee.write("-" * 97 + "\n")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  #  def sale_calculation(self):
- #       for i, Product in (self.clas_sale_number.products_dict.values)
-
-Sales_manage()         
-                                                                #* HASTA AQUÍ MI REPORTE, JOAQUIN (DIGO, ELIAB JAJAJA)
+    def sale_calculation(self):
+        total_sum=0
+        for index, product in self.clas_sale_number.products_dict.items() :
+            product=self.clas_sale_number.get_product(index)
+            total_sum+=(product.price*product.quantity)
+        self.print_in_box(f"Total import: ${total_sum}")
+        print("")
+        self.navigation()
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sales_manage()  #Inicia el programa
 
