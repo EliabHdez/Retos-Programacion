@@ -101,13 +101,14 @@ class Sales_manage:
                             if answer == 1:                                                                 
                                 self.print_in_box(f"Alright, let´s continue with product # {(sale_number)+1}")##Si se selecciona 1 (continuar) solo se detiene el loop interior que es el que pregunta si se desea continuar o no
                                 break
-                            if answer == 2:                                                                 #Si de desea parar y no agregar mas productos se detiene tambien el loop exterior dando seguimiento al loop interior
+                            if answer == 2:                                                                 #Si de desea parar y no agregar mas productos se detiene tambien el loop interior para que posteriormente el loop exterior haga lo propio
                                 break
                             else:
                                 print("Invalid choice. Please enter 1 or 2.")
-                finally:
-                        if answer == 2: 
+
+                    if answer == 2: 
                             break                                                                           #Si de desea parar y no agregar mas productos se detiene tambien el loop exterior dando seguimiento al loop interior
+
         self.last_number=sale_number
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -186,28 +187,5 @@ class Sales_manage:
                 fileee.write(f"{product_info}\n")                                           
                 fileee.write("-" * 80 + "\n")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 Sales_manage()         
-
-
-
-
-
-
-
-
                                                                 #* HASTA AQUÍ MI REPORTE, JOAQUIN (DIGO, ELIAB JAJAJA)
-
-
-
-
-
-
-
-
-
-
-
-
-
