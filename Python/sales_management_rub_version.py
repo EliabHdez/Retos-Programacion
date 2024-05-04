@@ -37,7 +37,7 @@ class Sales_manage:
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def navigation(self):
-        self.print_in_box("What do you need to do?\n 1: To change any product information(Description, Quantity sold  or Price)\n 2: To remove any product\n 3: To consult all sale´s products\n 4: To add more products")
+        self.print_in_box("What do you need to do?\n 1: To change any product information (Description, Quantity sold  or Price)\n 2: To remove any product\n 3: To consult all sale´s products\n 4: To add products")
         while True:
             try:
                 response=int(input("To continue, please type the number of your selection: \n"))
@@ -112,43 +112,67 @@ class Sales_manage:
         self.last_number=sale_number
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def consult(self):                                                                                  #* Funcion simple para consultar todos los productos (planeo agregar la opcion para consultar por numero o nombre de producto)
-        with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
-            for line in fileee:
-                print(line.strip())
-        self.navigation()
+    def consult(self): #* Funcion simple para consultar todos los productos (planeo agregar la opcion para consultar por numero o nombre de producto)
+        if self.clas_sale_number.get_product(1):
+            with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
+                for line in fileee:
+                    print(line.strip())
+        else:
+            self.print_in_box("There´s no products added")
+            self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def change_product_info(self):                                                                      #* Funcion para actulizar los datos del prodcuto seleccionado (ya sea nombre, cantidad o precio)
         while True:                                                                                     #Bucle para verificar que el numero de producto realmente exista
             self.print_in_box("Please enter # of the product to update: ")
-            number_by_user = int(input("#: "))
-            current_product = self.clas_sale_number.get_product(number_by_user)                         #Se llama a la funcion get_product() que es la que se encarga de buscar un producto por numero y lo retorna quedando disponible para hacer modificaciones 
-            if current_product:                                                                         #Si el producto existe se procede con el siguiente paso
-                while True:                                                                             #Bucle para verificar que se ingrese una opcion valida
-                    change = input("What do you need to change? (1: Product name, 2: Quantity sold, 3: Price) Please, enter number selection: ").capitalize()
-                    if change == "1" or change == "Name" or change== "Product" or change== "Product name":
-                        new_name = input("Enter new product name: ").capitalize()
-                        current_product.name = new_name 
-                        self.update_info()
-                        self.consult()
-                        break
-                    elif change == "2" or change == "Quantity" or change== "Qty" or change== "Sold" or change =="Quantity sold" or change =="Qty sold":
-                        new_quantity = input("Enter new quantity sold: ")
-                        current_product.quantity = new_quantity
-                        self.update_info()
-                        self.consult()
-                        break                                                                           #Al finalizar la modificacion termina la funcion, tengo pensado modificar el loop para seguir haciendo modificaciones si se desea 
-                    elif change == "3" or change=="Price" :                                             
-                        new_price = input("(Just numbers, no dollar sign) Enter new price: ")
-                        current_product.price = new_price
-                        self.update_info()
-                        self.consult()
-                        break
-                    else:
-                        self.print_in_box("Please, enter a valid selection")
-                break
+            try:
+                number_by_user = int(input("#: "))
+                print("")
+            except:
+                print("------------------------------------>Please, enter a valid selection number<------------------------------------\n")
             else:
-                self.print_in_box("This # sale doesn´t exist. Please, try again")                       #Si el numero de producto ingresado no existe se notifica al usuario y se repite el bucle
+                #Se llama a la funcion get_product() que es la que se encarga de buscar un producto por numero y lo retorna quedando disponible del producto para hacer modificaciones 
+                current_product = self.clas_sale_number.get_product(number_by_user)
+                if current_product:                 #Si el producto existe se procede con el siguiente paso
+                    while True:                     #Bucle para verificar que se ingrese una opcion valida
+                        try:                                                                            
+                            change = int(input("What do you need to change? (1: Product name, 2: Quantity sold, 3: Price) Please, enter number selection: "))
+                        except:
+                            print("------------------------------------>Please, enter just a valid selection number<------------------------------------\n")
+                        else:
+                            if change == 1 :
+                                new_name = input("Enter new product name: ").capitalize()
+                                current_product.name = new_name 
+                                self.update_info()
+                                self.consult()
+                            elif change == 2:
+                                while True:
+                                    try:
+                                        new_quantity = int(input("Enter new quantity sold--------->: "))
+                                    except:
+                                        print("")
+                                        print("(------------------------------------>Please, enter a valid quantity<------------------------------------\n")
+                                    else:
+                                        current_product.quantity = new_quantity
+                                        self.update_info()
+                                        self.consult()
+                            elif change == 3 :
+                                while True:
+                                    try:                                             
+                                        new_price = int(input("(Just numbers, no dollar sign)\n Enter new price -------->: "))
+                                    except: 
+                                        print("")
+                                        print("------------------------------------>Please, enter a valid new price<------------------------------------\n")
+                                    else:    
+                                        current_product.price = new_price
+                                        self.update_info()
+                                        self.consult()
+                            elif change < 1 or change > 3:
+                                print("------------------------------------>Please, enter a valid selection number<------------------------------------\n")
+                            elif change > 0 or change < 4:
+                                break
+                else:
+                    self.print_in_box("This # sale doesn´t exist. Please, try again") #Si el numero de producto ingresado no existe se notifica al usuario y se repite el bucle
+                        
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def remove_product (self):                                                                          #* Función para remover un producto (por #)
@@ -176,7 +200,7 @@ class Sales_manage:
         self.clas_sale_number.products_dict = updated_products_dict                                     #Se llama al diccionario modificado para actualizarlo con la informacion del diccionario temporal
 
         with open("C:/Python/Files/Sales/current_sale.txt", "w") as fileee:                 
-            for i, product in self.clas_sale_number.products_dict.items():                              #Loop-for para acceder a los elemento del diccionario ya actualizado y reescribir los datos actualizados en el .txt
+            for i, product in self.clas_sale_number.products_dict.items():                              #Loop-for para acceder a los elementos del diccionario ya actualizado y reescribir los datos actualizados en el .txt
                 Number_symbol = "#: "
                 str_product = "Product: "
                 str_qty = "Qty: "
@@ -187,5 +211,9 @@ class Sales_manage:
                 fileee.write(f"{product_info}\n")                                           
                 fileee.write("-" * 80 + "\n")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  #  def sale_calculation(self):
+ #       for i, Product in (self.clas_sale_number.products_dict.values)
+
 Sales_manage()         
                                                                 #* HASTA AQUÍ MI REPORTE, JOAQUIN (DIGO, ELIAB JAJAJA)
+
