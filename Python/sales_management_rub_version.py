@@ -35,7 +35,7 @@ class Sales_manage:     #*Clase principal para gestionar el programa
         self.clas_sale_number = Sale_number()   #*Instancia para llamar a la clase Sale_number() y sus funciones dentro de esta clase principal
         self.print_in_box("You´re in SALES management, let´s begin adding products...")
         self.create_product() #Se inicia el programa con la obligacion de agregar al menos un producto
-        self.navigation()
+
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def navigation(self): #* Nombre autodescriptivo xd 
         print("---------------------------------------------------------------------------------------------------------------------")
@@ -250,6 +250,13 @@ class Sales_manage:     #*Clase principal para gestionar el programa
                     print("")
         self.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#pendiente (dividir)
+
+
+
+
+
     def update_info(self):    #* Función para actualizar datos despues de realizar una modificacion, tanto del dict como del txt
         updated_products_dict = {}    #Diccionario (temporal) para almacenar los productos actualizados en el orden correcto
         for index, product in enumerate(self.clas_sale_number.products_dict.values(), start=1): #*Loop for para obtener los elementos del diccionario ya modificado, obteniendo values(el producto) comenzando por el indice 1 
