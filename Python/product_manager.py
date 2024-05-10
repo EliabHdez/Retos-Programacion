@@ -22,11 +22,13 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
         last_number = len(self.products_list)
         sale_number = last_number
         while True: #Loop es optener una respuesta deseada, con la cual poder continuar el proceso 
-            self.class_sale.print_in_box(f"Product # {(sale_number)+1}")                                                                                       
+            self.class_sale.print_in_box(f"Adding product # {(sale_number)+1}")                                                                                       
             try:                                                                                       
                 name = input("Description: ").capitalize() #Por lo pronto se permite cualquier tipo de caracter para el nombre (incluso espacio vacío, luego soluciono eso xd)
                 quantity = int(input("Quantity sold: "))
-                price = int(input("Price: "))
+                price = int(input("Price: $ "))
+                self.class_sale.print_in_box("Product seccessfully added!")
+                print("~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
             except:
                 self.class_sale.print_in_box("ERROR: Only numbers must be typed for quantity and price!") #Reglas para el input (respuesta deseada)
                 print("#########################################################".center(117))
@@ -53,7 +55,7 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                             break #Si de desea parar y no agregar mas productos se detiene el loop interior y posteriormente el loop exterior hace break tambien
                 if answer == 2:
                     self.class_file.write_in_txt(self.products_list)
-                    self.consult() #consult te saca al menu de navegacion
+                    self.class_file.consult() #consult te saca al menu de navegacion
                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
                     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
                     break
@@ -79,7 +81,7 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                     number_by_user = int(input("---------------------------------------------------------->: "))
                     print("")
                     if number_by_user == 0:
-                        self.consult()
+                        self.class_file.consult()
                         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
                         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
                         break
@@ -126,7 +128,7 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                                         while True:
                                             try:
                                                 self.class_sale.print_in_box(" Enter new price (Just number, no dollar sign)")                                             
-                                                new_price = int(input("(----------------------------------------------------> $: "))
+                                                new_price = int(input("(----------------------------------------------------> :$ "))
                                                 print("")
                                             except: 
                                                 print("")
@@ -175,7 +177,7 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                         number_by_user=int(input("--------------------------------------------------------> #: "))
                         print("")
                         if number_by_user == 0:
-                            self.consult()
+                            self.class_file.consult()
                             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
                             print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
                             break #Se rompe el loop una vez teminado el proceso
@@ -193,7 +195,7 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                     if product_to_remove:
                         self.products_list.remove(product_to_remove)    #Si el numero de producto dado por el usuario existe se elimina
                         self.class_sale.print_in_box("|||||  Product deleted!  |||||")
-                        print                              ("~~~~~~~~~~~~~~~~".center(117))
+                        print("~~~~~~~~~~~~~~~~".center(117))
                         self.class_file.write_in_txt(self.products_list)
                     else:
                         self.class_sale.print_in_box("ERROR: That product # doesn´t exist!... Please try again ;)")
@@ -201,14 +203,4 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
         else:
             self.class_sale.print_in_box("There´s no products added yet!, to add products select option 1.")
             print("################################################################".center(117))
-#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    def consult(self): #* Funcion simple para consultar todos los productos (planeo agregar la opcion para consultar por numero o nombre de producto)
-        with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
-            for line in fileee:
-                print(line.strip())
-        print("")
-        total_sum=0
-        for product in self.products_list :
-            total_sum+=(product.importt)
-        self.class_sale.print_in_box(f"Total import: ${total_sum}")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

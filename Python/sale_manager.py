@@ -7,7 +7,6 @@ class SALE_Manager:     #*Clase principal para gestionar el menu de sale_manager
         from product_manager import Product_NUMBER
         self.class_number = Product_NUMBER()   #*Instancia para llamar a la clase Sale_number() y sus funciones dentro de esta clase principal
         self.print_in_box("----> You´re in SALES management <-----")
-
         while True:
             try:
                 print("---------------------------------------------------------------------------------------------------------------------")
@@ -40,8 +39,6 @@ class SALE_Manager:     #*Clase principal para gestionar el menu de sale_manager
         print("-" * (length + 4))                  #|             Formato de CAJA que centra el contenido automaticamente               |
         print("|", message.center(length), "|")    #-------------------------------------------------------------------------------------
         print("-" * (length + 4))
-
-
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 start_SM= SALE_Manager()
 start_SM.navigation()

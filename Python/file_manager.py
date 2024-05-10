@@ -20,4 +20,17 @@ class FILE_Manager:
                 fileee.write(f"{product_info}\n")  #Se escribe la info con formato de tabla en el .txt                                
                 fileee.write("-" * 117 + "\n")
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    
+    def consult(self): #* Funcion simple para consultar todos los productos (planeo agregar la opcion para consultar por numero o nombre de producto)
+        from product_manager import Product_NUMBER
+        self.class_number = Product_NUMBER()
+        from sale_manager import SALE_Manager
+        self.class_sale = SALE_Manager()   #*Instancia para llamar a la clase SALE_Manager() y sus funciones dentro de esta funcion
+        with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
+            for line in fileee:
+                print(line.strip())
+        print("")
+        total_sum=0
+        for product in self.class_number.products_list :
+            total_sum+=(product.importt)
+        self.class_sale.print_in_box(f"Total import: ${total_sum}")
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
