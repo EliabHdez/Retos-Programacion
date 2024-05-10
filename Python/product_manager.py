@@ -25,12 +25,12 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
             self.class_sale.print_in_box(f"Product # {(sale_number)+1}")                                                                                       
             try:                                                                                       
                 name = input("Description: ").capitalize() #Por lo pronto se permite cualquier tipo de caracter para el nombre (incluso espacio vacío, luego soluciono eso xd)
-            except:
-                self.class_sale.print_in_box("-----> Only numbers must be typed for quantity and price <-----") #Reglas para el input (respuesta deseada)
-                print("")
-            else:
                 quantity = int(input("Quantity sold: "))
                 price = int(input("Price: "))
+            except:
+                self.class_sale.print_in_box("ERROR: Only numbers must be typed for quantity and price!") #Reglas para el input (respuesta deseada)
+                print("#########################################################".center(117))
+            else:
                 #################################################################
                 importt = quantity * price
                 new_product = PRODUCT(name, quantity, price, importt) #Se crea el objeto(PRODUCT) con sus propiedades definidas
@@ -43,8 +43,8 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                         print("--------------------------------------------------------------------------------------------------------------------\n")
                     except:
                         print("")
-                        self.print_in_box(f"Please, enter just 1 or 2")
-                        print("")
+                        self.print_in_box("ERROR: Please, enter just 1 or 2!")
+                        print("#################################".center(117))
                     else:
                         if answer == 1: 
                                 ##Si se selecciona 1 (continuar) solo se detiene el loop interior (que es el que pregunta si se desea continuar o no)
@@ -54,6 +54,9 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
                 if answer == 2:
                     self.class_file.write_in_txt(self.products_list)
                     self.consult() #consult te saca al menu de navegacion
+                    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                    break
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def add_product(self, new_product):   #* Esta función agrega los productos al dict (comenzando con el indice 1 para que coincida con nuestra forma de contar) 
         self.products_list.append(new_product)  #Posteriormente en la clase Sales_manage en la función create_product se asocia el indice con la variable sale_number
@@ -68,125 +71,144 @@ class Product_NUMBER:   #* Esta clase gestiona un diccionario para manejar los p
         self.class_sale = SALE_Manager()   #*Instancia para llamar a la clase SALE_Manager() y sus funciones dentro de esta funcion
         from file_manager import FILE_Manager
         self.class_file = FILE_Manager()
-        while True:   #Bucle para verificar que el numero de producto realmente exista
-            try:
-                self.class_sale.print_in_box("Please enter # of the product to modify: ")
-                self.class_sale.print_in_box("--> Enter 0 to finish and go back  <--")
-                number_by_user = int(input("------------------------->#: "))
-                print("")
-                if number_by_user == 0:
-                    self.class_sale.navigation()
-                else:
-                    #Se llama a la funcion get_product() que es la que se encarga de buscar un producto por numero y lo retorna quedando disponible del producto para hacer modificaciones 
-                    current_product = self.get_product(number_by_user)
-                    if current_product:     #Si el producto existe se procede con el siguiente paso, si no se vuelve a solicitar
-                        while True:          #Bucle para verificar que se ingrese una opcion valida
-                            try:      
-                                print("---------------------------------------------------------------------------------------------------------------------")
-                                print("|                                           What do you need to change?                                             |")
-                                print("|                                             1: Product Description                                                |")
-                                print("|                                                2: Quantity sold                                                   |")   #*Chingona la piramide no? xd
-                                print("|                                                    3:  Price                                                      |")
-                                print("|                                                        ;)                                                         |")
-                                print("---------------------------------------------------------------------------------------------------------------------\n")
-                                change = int(input("---------------------------------------- Enter the number of your selection ----------------------------------------> #: ")) 
-                                print("")
-                                if change == 1 :
-                                    new_name = input("Enter new product Description --->: ").capitalize()
-                                    print("")
-                                    current_product.name = new_name 
-                                    self.class_file.write_in_txt(self.products_list)
-                                    self.class_sale.print_in_box ("Description updated")
-                                    break
-                                elif change == 2:                           # creo estos bucles no requieren mayor explicacion
-                                    while True:                             # estan en busca de la respuesta apropiada
-                                        try:
-                                            new_quantity = int(input("Enter new quantity sold --->: "))
-                                            print("")
-                                        except Exception as error:
-                                            print("")
-                                            self.class_sale.print_in_box("Please, enter a valid quantity (just numbers, any other caracter)")
-                                            print(error)
-                                        else:
-                                            current_product.quantity = new_quantity
-                                            self.class_file.write_in_txt(self.products_list)
-                                            self.class_sale.print_in_box ("Quantity updated")
-                                            break
-                                elif change == 3 :
-                                    while True:
-                                        try:
-                                            self.class_sale.print_in_box(" Enter new price (Just number, no dollar sign)")                                             
-                                            new_price = int(input("( ---> $: "))
-                                            print("")
-                                        except Exception as error: 
-                                            print("")
-                                            self.class_sale.print_in_box("Please, enter a valid new price (just numbers, any other caracter)")
-                                            print(error)
-                                        else:    
-                                            current_product.price = new_price
-                                            self.class_sale.print_in_box ("Price updated")
-                                            self.class_file.write_in_txt(self.products_list)
-                                            break
-                                elif change < 1 or change > 3:
-                                    self.class_sale.print_in_box("Please, enter a valid selection number (1, 2 or 3)")
-                                    print("")
-                                break
-
-                            except:
-                                print("")
-                                self.class_sale.print_in_box("Please, enter a valid selection (1, 2 or 3)")
-                                print("")
-                        
+        if self.products_list:
+            while True:   #Bucle para verificar que el numero de producto realmente exista
+                try:
+                    self.class_sale.print_in_box("----------> Please, enter # of the product to modify <----------")
+                    self.class_sale.print_in_box("Enter 0 to exit")
+                    number_by_user = int(input("---------------------------------------------------------->: "))
+                    print("")
+                    if number_by_user == 0:
+                        self.consult()
+                        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                        break
                     else:
-                        self.class_sale.print_in_box("This product # doesn´t exist. ---> Please, try again...") #Si el numero de producto ingresado no existe se notifica al usuario y se repite el bucle
-                        print("")
+                        #Se llama a la funcion get_product() que es la que se encarga de buscar un producto por numero y lo retorna quedando disponible del producto para hacer modificaciones 
+                        current_product = self.get_product(number_by_user)
+                        if current_product:     #Si el producto existe se procede con el siguiente paso, si no se vuelve a solicitar
+                            while True:          #Bucle para verificar que se ingrese una opcion valida
+                                try:      
+                                    print("---------------------------------------------------------------------------------------------------------------------")
+                                    print("|                                            What do you need to change?                                            |")
+                                    print("|                                              1: Product Description                                               |")
+                                    print("|                                                 2: Quantity sold                                                  |")   #*Chingona la piramide no? xd
+                                    print("|                                                     3:  Price                                                     |")
+                                    print("|                                                         ;)                                                        |")
+                                    print("---------------------------------------------------------------------------------------------------------------------\n")
+                                    change = int(input("---------------- Enter the number of your selection --->: ")) 
+                                    print("")
+                                    if change == 1 :
+                                        new_name = input("-------------------------->Enter new product description: ").capitalize()
+                                        print("")
+                                        current_product.name = new_name 
+                                        self.class_file.write_in_txt(self.products_list)
+                                        self.class_sale.print_in_box ("|||||  Description updated!  |||||")
+                                        print("~~~~~~~~~~~~~~~~~~~~".center(117))
+                                        break
+                                    elif change == 2:                           # creo estos bucles no requieren mayor explicacion
+                                        while True:                             # estan en busca de la respuesta apropiada
+                                            try:
+                                                new_quantity = int(input("-------------------------------->Enter new quantity sold: "))
+                                                print("")
+                                            except:
+                                                print("")
+                                                self.class_sale.print_in_box("ERROR: Please, enter a valid quantity (just numbers, any other caracter)")
+                                                print("########################################################################".center(117))
+                                            else:
+                                                current_product.quantity = new_quantity
+                                                current_product.importt = current_product.quantity * current_product.price
+                                                self.class_file.write_in_txt(self.products_list)
+                                                self.class_sale.print_in_box ("|||||  Quantity updated!  |||||")
+                                                print("~~~~~~~~~~~~~~~~~".center(117))
+                                                break
+                                    elif change == 3 :
+                                        while True:
+                                            try:
+                                                self.class_sale.print_in_box(" Enter new price (Just number, no dollar sign)")                                             
+                                                new_price = int(input("(----------------------------------------------------> $: "))
+                                                print("")
+                                            except: 
+                                                print("")
+                                                self.class_sale.print_in_box("Please, enter a valid new price (just numbers, any other caracter)")
+                                                print("##################################################################".center(117))
+                                            else:    
+                                                current_product.price = new_price
+                                                current_product.importt = current_product.quantity * current_product.price
+                                                self.class_sale.print_in_box ("|||||  Price updated!  |||||")
+                                                print("~~~~~~~~~~~~~~".center(117))
+                                                self.class_file.write_in_txt(self.products_list)
+                                                break
+                                    elif change < 1 or change > 3:
+                                        self.class_sale.print_in_box("ERROR: Please, enter a valid selection number (1, 2 or 3)!")
+                                        print("##########################################################".center(117))
+                                    break #* Este break es para finalizar el bucle intermedio y volver a preguntar que producto se desea modificar si es el caso, o salir si se ha terminano
 
-            except:
-                print("")
-                self.class_sale.print_in_box("-----> Please, enter a PRODUCT # only, not any other caracter <-----")
-                print("")
+                                except:
+                                    print("")
+                                    self.class_sale.print_in_box("ERROR: Please, enter a selection number! (not any other caracter)")
+                                    print("#################################################################".center(117))
+                            
+                        else:
+                            self.class_sale.print_in_box("ERROR: That product # doesn´t exist!... Please try again ;)") #Si el numero de producto ingresado no existe se notifica al usuario y se repite el bucle
+                            print("###########################################################".center(117))
+
+                except:
+                    print("")
+                    self.class_sale.print_in_box("ERROR: Please, enter a PRODUCT # only, not any other caracter!")
+                    print("##############################################################".center(117))
+        else:
+            self.class_sale.print_in_box("There´s no products added yet!, to add products enter 1.")
+            print("#########################################################".center(117))
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def remove_product (self):    #* Función para remover un producto (por #)
         from sale_manager import SALE_Manager
         self.class_sale = SALE_Manager()   #*Instancia para llamar a la clase SALE_Manager() y sus funciones dentro de esta clase principal
         from file_manager import FILE_Manager
         self.class_file = FILE_Manager()
-        while True:      #Igual que los anteriores loop de verificacion
-            try:
-                self.class_sale.print_in_box("Please enter # of the product to remove: ")
-                self.class_sale.print_in_box("--> Enter 0 to finish and go back  <--")
-                number_by_user=int(input("---> #: "))
-                print("")
-                if number_by_user == 0:
-                    self.class_sale.navigation()  #Y se devuelve en automatico para el usuario una consulta de los productos 
-                    #Se rompe el loop una vez teminado el proceso
-            except:
-                print("")
-                self.class_sale.print_in_box("-----> Please enter just a number <-----")
-                print("")
-            else:
-                product_to_remove = self.get_product(number_by_user)
-                if product_to_remove:
-                    self.products_list.remove(product_to_remove)    #Si el numero de producto dado por el usuario existe se elimina
-                    self.class_sale.print_in_box("-----> Product deleted <-----")
-                    self.class_file.write_in_txt(self.products_list)
-                else:
-                    self.class_sale.print_in_box("-----> That sale # doesn´t exist... Please try again <-----")
+        if self.products_list:
+            while True:      #Igual que los anteriores loop de verificacion
+                try:
+                    if self.products_list:
+                        self.class_sale.print_in_box("----------> Please enter # of the product to remove <----------")
+                        self.class_sale.print_in_box("Enter 0 to exit")
+                        number_by_user=int(input("--------------------------------------------------------> #: "))
+                        print("")
+                        if number_by_user == 0:
+                            self.consult()
+                            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                            print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                            break #Se rompe el loop una vez teminado el proceso
+                        
+                    else:
+                        self.class_sale.print_in_box("|||||  There's no more products!  |||||")
+                        print("~~~~~~~~~~~~~~~~~~~~~~~~~".center(117))
+                        break
+                except:
                     print("")
+                    self.class_sale.print_in_box("ERROR: Please enter just the product number to remove!")
+                    print("######################################################".center(117))
+                else:
+                    product_to_remove = self.get_product(number_by_user)
+                    if product_to_remove:
+                        self.products_list.remove(product_to_remove)    #Si el numero de producto dado por el usuario existe se elimina
+                        self.class_sale.print_in_box("|||||  Product deleted!  |||||")
+                        print                              ("~~~~~~~~~~~~~~~~".center(117))
+                        self.class_file.write_in_txt(self.products_list)
+                    else:
+                        self.class_sale.print_in_box("ERROR: That product # doesn´t exist!... Please try again ;)")
+                        print("###########################################################".center(117))
+        else:
+            self.class_sale.print_in_box("There´s no products added yet!, to add products select option 1.")
+            print("################################################################".center(117))
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     def consult(self): #* Funcion simple para consultar todos los productos (planeo agregar la opcion para consultar por numero o nombre de producto)
-        if self.products_list:
-            with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
-                for line in fileee:
-                    print(line.strip())
-            print("")
-        else:
-            self.class_sale.print_in_box("There´s no products added")
-            print("")
+        with open("C:/Python/Files/Sales/current_sale.txt", "r") as fileee:
+            for line in fileee:
+                print(line.strip())
+        print("")
         total_sum=0
         for product in self.products_list :
             total_sum+=(product.importt)
         self.class_sale.print_in_box(f"Total import: ${total_sum}")
-        print("")
-        self.class_sale.navigation()
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
