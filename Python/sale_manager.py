@@ -1,13 +1,14 @@
 ##############################################################################################################################################################################################################################
 class SALE_Manager:     #*Clase principal para gestionar el menu de sale_manager
     def __init__(self,hola = None):
-        self.hola = hola
+        self.hola = hola    #la neta no sabia que poner como propiedad y ya que requeria pues esa xd
 ##############################################################################################################################################################################################################################
-    def navigation(self): #* Nombre autodescriptivo xd 
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    def navigation(self): #* Nombre autodescriptivo, pa navegar entre las funciones del porgrama
         from product_manager import Product_NUMBER
-        self.class_number = Product_NUMBER()   #*Instancia para llamar a la clase Sale_number() y sus funciones dentro de esta clase principal
+        self.class_number = Product_NUMBER()   #*Instancia para llamar a las funciones de la clase Product_NUMBER() dentro de esta
         self.print_in_box("----> You´re in SALES management <-----")
-        while True:
+        while True: #loop infinito para navegar entre las funciones y al finalizar la funcion volver al mismo, para evitar asi la recursividad
             try:
                 print("---------------------------------------------------------------------------------------------------------------------")
                 print("|                                              What do you need to do?                                              |")
@@ -19,12 +20,12 @@ class SALE_Manager:     #*Clase principal para gestionar el menu de sale_manager
                 print("")
             except:
                 print("")
-                self.print_in_box("ERROR: Only numbers must be typed for a valid selection")
+                self.print_in_box("ERROR: Only numbers must be typed for a valid selection") # mensaje de error en caso que el usuario ingrese letras o simbolos
                 print("#######################################################".center(117))
             else:
                 if response < 1 or response > 3:
                     print("")
-                    self.print_in_box("Please, enter a valid selection number")
+                    self.print_in_box("Please, enter a valid selection number") #en caso que el usuario no ingrese un numero correspondiente a las opciones dadas
                     print("######################################".center(117))
                 else:
                     if response == 1:
